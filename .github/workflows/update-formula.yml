@@ -1,0 +1,63 @@
+name: Update Formula
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9am UTC
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for new release
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LATEST=$(gh api repos/git-pkgs/git-pkgs/releases/latest --jq '.tag_name' | sed 's/^v//')
+          CURRENT=$(grep -m1 'version "' Formula/git-pkgs.rb | sed 's/.*version "\([^"]*\)".*/\1/')
+
+          echo "latest=$LATEST" >> $GITHUB_OUTPUT
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+
+          if [ "$LATEST" != "$CURRENT" ]; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "New version available: $LATEST (current: $CURRENT)"
+          else
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+            echo "Already up to date: $CURRENT"
+          fi
+
+      - name: Update formula
+        if: steps.check.outputs.needs_update == 'true'
+        env:
+          VERSION: ${{ steps.check.outputs.latest }}
+        run: |
+          # Download checksums
+          curl -sL "https://github.com/git-pkgs/git-pkgs/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
+
+          # Extract SHA256 for each platform
+          SHA_DARWIN_AMD64=$(grep 'darwin-amd64' checksums.txt | awk '{print $1}')
+          SHA_DARWIN_ARM64=$(grep 'darwin-arm64' checksums.txt | awk '{print $1}')
+          SHA_LINUX_AMD64=$(grep 'linux-amd64' checksums.txt | awk '{print $1}')
+          SHA_LINUX_ARM64=$(grep 'linux-arm64' checksums.txt | awk '{print $1}')
+
+          # Update formula
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" Formula/git-pkgs.rb
+          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_DARWIN_AMD64}\"/" Formula/git-pkgs.rb
+          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_DARWIN_ARM64}\"/" Formula/git-pkgs.rb
+          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_LINUX_AMD64}\"/" Formula/git-pkgs.rb
+          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_LINUX_ARM64}\"/" Formula/git-pkgs.rb
+
+      - name: Commit and push
+        if: steps.check.outputs.needs_update == 'true'
+        env:
+          VERSION: ${{ steps.check.outputs.latest }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/git-pkgs.rb
+          git commit -m "Update git-pkgs to v${VERSION}"
+          git push
