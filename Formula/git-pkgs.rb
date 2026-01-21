@@ -29,7 +29,7 @@ class GitPkgs < Formula
   end
 
   def install
-    bin.install "git-pkgs"
+    bin.install Dir["git-pkgs-*"].first => "git-pkgs"
   end
 
   test do
