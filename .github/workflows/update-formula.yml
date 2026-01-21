@@ -49,12 +49,24 @@ jobs:
           SHA_LINUX_AMD64=$(grep 'linux-amd64' checksums.txt | awk '{print $1}')
           SHA_LINUX_ARM64=$(grep 'linux-arm64' checksums.txt | awk '{print $1}')
 
-          # Update formula
-          sed -i "s/version \".*\"/version \"${VERSION}\"/" Formula/git-pkgs.rb
-          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_DARWIN_AMD64}\"/" Formula/git-pkgs.rb
-          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_DARWIN_ARM64}\"/" Formula/git-pkgs.rb
-          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_LINUX_AMD64}\"/" Formula/git-pkgs.rb
-          sed -i "0,/sha256 \"[a-f0-9]*\"/s//sha256 \"${SHA_LINUX_ARM64}\"/" Formula/git-pkgs.rb
+          # Update formula - use awk to match sha256 lines by their preceding url context
+          awk -v ver="$VERSION" \
+              -v sha_da="$SHA_DARWIN_AMD64" -v sha_darm="$SHA_DARWIN_ARM64" \
+              -v sha_la="$SHA_LINUX_AMD64" -v sha_larm="$SHA_LINUX_ARM64" '
+            /version "/ { gsub(/"[^"]*"/, "\"" ver "\"") }
+            /darwin-amd64\.tar\.gz/ { url_type = "darwin-amd64" }
+            /darwin-arm64\.tar\.gz/ { url_type = "darwin-arm64" }
+            /linux-amd64\.tar\.gz/ { url_type = "linux-amd64" }
+            /linux-arm64\.tar\.gz/ { url_type = "linux-arm64" }
+            /sha256 "/ {
+              if (url_type == "darwin-amd64") gsub(/"[a-f0-9]+"/, "\"" sha_da "\"")
+              else if (url_type == "darwin-arm64") gsub(/"[a-f0-9]+"/, "\"" sha_darm "\"")
+              else if (url_type == "linux-amd64") gsub(/"[a-f0-9]+"/, "\"" sha_la "\"")
+              else if (url_type == "linux-arm64") gsub(/"[a-f0-9]+"/, "\"" sha_larm "\"")
+              url_type = ""
+            }
+            { print }
+          ' Formula/git-pkgs.rb > Formula/git-pkgs.rb.tmp && mv Formula/git-pkgs.rb.tmp Formula/git-pkgs.rb
 
       - name: Commit and push
         if: steps.check.outputs.needs_update == 'true'
