@@ -1,35 +1,36 @@
 class GitPkgs < Formula
   desc "Git-native package manager for monorepos"
   homepage "https://github.com/git-pkgs/git-pkgs"
-  version "0.10.0"
+  version "0.10.2"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs-darwin-amd64.tar.gz"
-      sha256 "de0ada00b5f291d02092f8066225e47714829bcdc8a8a69a219964525a008274"
+      sha256 "c8673dc5c686bcbab833053c38078b73352f49c94d242ac3f44f23cc36a4f734"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs-darwin-arm64.tar.gz"
-      sha256 "27cbf6ffdb971150ce45bfc6d392a39ee5e5c7af5ce5f93ec75f00768e485c9b"
+      sha256 "1da38bbe004d53d7085cbf124957a0ab8102928730ad84961f4bbc46e3bea2b8"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs-linux-amd64.tar.gz"
-      sha256 "0289c9fd684cef140d01883bf8b4fe09b763e2870cc303a9ec686bf38f6096c6"
+      sha256 "43c97a3556785943bfbb26623c76c23aa4edf6e1abf89c9a5228a7b2ce6df16a"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs-linux-arm64.tar.gz"
-      sha256 "3e8a91b07897b57d44bcad8b996e776a8d6e699e4822e38a5a561cb0d3e731b7"
+      sha256 "2b79ef50893a27b7e6999515d178541a6e6d0cba285574eb6e6f5739d2e8e987"
     end
   end
 
   def install
     bin.install Dir["git-pkgs-*"].first => "git-pkgs"
+    man1.install Dir["man/*.1"]
   end
 
   test do
