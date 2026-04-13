@@ -25,6 +25,9 @@ jobs:
           - name: forge
             repo: git-pkgs/forge
             formula: Formula/forge.rb
+          - name: brief
+            repo: git-pkgs/brief
+            formula: Formula/brief.rb
     steps:
       - uses: actions/checkout@v4
         with:
