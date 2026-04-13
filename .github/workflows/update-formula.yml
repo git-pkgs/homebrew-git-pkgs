@@ -11,18 +11,38 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        include:
+          - name: git-pkgs
+            repo: git-pkgs/git-pkgs
+            formula: Formula/git-pkgs.rb
+          - name: proxy
+            repo: git-pkgs/proxy
+            formula: Formula/proxy.rb
+          - name: forge
+            repo: git-pkgs/forge
+            formula: Formula/forge.rb
+          - name: brief
+            repo: git-pkgs/brief
+            formula: Formula/brief.rb
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           persist-credentials: false
 
       - name: Check for new release
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ matrix.repo }}
+          FORMULA: ${{ matrix.formula }}
         run: |
-          LATEST=$(gh api repos/git-pkgs/git-pkgs/releases/latest --jq '.tag_name' | sed 's/^v//')
-          CURRENT=$(grep -m1 'version "' Formula/git-pkgs.rb | sed 's/.*version "\([^"]*\)".*/\1/')
+          LATEST=$(gh api "repos/${REPO}/releases/latest" --jq '.tag_name' | sed 's/^v//')
+          CURRENT=$(grep -m1 'version "' "$FORMULA" | sed 's/.*version "\([^"]*\)".*/\1/')
 
           echo "latest=$LATEST" >> $GITHUB_OUTPUT
           echo "current=$CURRENT" >> $GITHUB_OUTPUT
@@ -39,9 +59,11 @@ jobs:
         if: steps.check.outputs.needs_update == 'true'
         env:
           VERSION: ${{ steps.check.outputs.latest }}
+          REPO: ${{ matrix.repo }}
+          FORMULA: ${{ matrix.formula }}
         run: |
           # Download checksums
-          curl -sL "https://github.com/git-pkgs/git-pkgs/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
+          curl -sL "https://github.com/${REPO}/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
 
           # Extract SHA256 for each platform
           SHA_DARWIN_AMD64=$(grep 'darwin_amd64' checksums.txt | awk '{print $1}')
@@ -66,17 +88,20 @@ jobs:
               url_type = ""
             }
             { print }
-          ' Formula/git-pkgs.rb > Formula/git-pkgs.rb.tmp && mv Formula/git-pkgs.rb.tmp Formula/git-pkgs.rb
+          ' "$FORMULA" > "$FORMULA.tmp" && mv "$FORMULA.tmp" "$FORMULA"
 
       - name: Commit and push
         if: steps.check.outputs.needs_update == 'true'
         env:
           VERSION: ${{ steps.check.outputs.latest }}
           GH_TOKEN: ${{ github.token }}
+          NAME: ${{ matrix.name }}
+          FORMULA: ${{ matrix.formula }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/git-pkgs.rb
-          git commit -m "Update git-pkgs to v${VERSION}"
+          git add "$FORMULA"
+          git commit -m "Update ${NAME} to v${VERSION}"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git pull --rebase origin main
           git push
