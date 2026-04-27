@@ -47,14 +47,14 @@ jobs:
           LATEST=$(gh api "repos/${REPO}/releases/latest" --jq '.tag_name' | sed 's/^v//')
           CURRENT=$(grep -m1 'version "' "$FORMULA" | sed 's/.*version "\([^"]*\)".*/\1/')
 
-          echo "latest=$LATEST" >> $GITHUB_OUTPUT
-          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
 
           if [ "$LATEST" != "$CURRENT" ]; then
-            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "needs_update=true" >> "$GITHUB_OUTPUT"
             echo "New version available: $LATEST (current: $CURRENT)"
           else
-            echo "needs_update=false" >> $GITHUB_OUTPUT
+            echo "needs_update=false" >> "$GITHUB_OUTPUT"
             echo "Already up to date: $CURRENT"
           fi
 
