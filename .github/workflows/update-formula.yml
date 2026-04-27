@@ -28,6 +28,9 @@ jobs:
           - name: brief
             repo: git-pkgs/brief
             formula: Formula/brief.rb
+          - name: pom
+            repo: git-pkgs/pom
+            formula: Formula/pom.rb
     steps:
       - uses: actions/checkout@v4
         with:
