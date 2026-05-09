@@ -1,30 +1,30 @@
 class Forge < Formula
   desc "CLI for working with git forges (GitHub, GitLab, Gitea, Bitbucket)"
   homepage "https://github.com/git-pkgs/forge"
-  version "0.4.2"
+  version "0.5.0"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/forge/releases/download/v#{version}/forge_#{version}_darwin_amd64.tar.gz"
-      sha256 "145b39cfb7d031f67ca9f5a0ce81167632ee1f1a704e9ba1391af893cceba563"
+      sha256 "b3c370ab0e36d90ca90e2660a84adaba705f86f651d92cf3b4d2ad34d3c9eab0"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/forge/releases/download/v#{version}/forge_#{version}_darwin_arm64.tar.gz"
-      sha256 "7b7c9280afcc0276fda9a92ad974987d10e959c7733e90d348628a304db8a1dd"
+      sha256 "59fa7b33fadad4be8564e63633c2dbdfd911d2556e0a41376e58257e7b0f8624"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/forge/releases/download/v#{version}/forge_#{version}_linux_amd64.tar.gz"
-      sha256 "c6758a358c99fa5173586aee24f28d449bf7083898a7a48dd13572b81b0331e6"
+      sha256 "dcc6fb27b959ec7b286faf5b762d91606623ff5e53b832358bbea396d3edbb11"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/forge/releases/download/v#{version}/forge_#{version}_linux_arm64.tar.gz"
-      sha256 "25a1c04089a6961c2a6fa1a4eacf87b98ff9ce2e10bbf770f3c571a24dba9c29"
+      sha256 "7be6ec5f4de925eb8c686620057c97bf59a70f00e70345edfc6bddd45508bbdd"
     end
   end
 
