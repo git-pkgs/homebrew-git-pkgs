@@ -31,6 +31,9 @@ jobs:
           - name: pom
             repo: git-pkgs/pom
             formula: Formula/pom.rb
+          - name: pin
+            repo: git-pkgs/pin
+            formula: Formula/pin.rb
     steps:
       - uses: actions/checkout@v4
         with:
