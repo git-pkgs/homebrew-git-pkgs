@@ -1,30 +1,30 @@
 class Proxy < Formula
   desc "Caching proxy for package registries"
   homepage "https://github.com/git-pkgs/proxy"
-  version "0.3.2"
+  version "0.4.0"
   license "GPL-3.0-or-later"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/proxy/releases/download/v#{version}/proxy_#{version}_darwin_amd64.tar.gz"
-      sha256 "f818d82bad0e62c2edc509fbe85ed4f7a2706da1a8da3db49fd207d26fe755ea"
+      sha256 "2b66332c7e2bd1692de5656a2768ccef6db6945cadb406396ef2b716dffd07ec"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/proxy/releases/download/v#{version}/proxy_#{version}_darwin_arm64.tar.gz"
-      sha256 "e78b0f4f2b2de26a620fe657ec421976f7ea756a247600629417130050c88a24"
+      sha256 "fdcd0983ba1d8aed2e44e3fcdccf407afd5c6c110614a72a1884773ec6364c62"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/proxy/releases/download/v#{version}/proxy_#{version}_linux_amd64.tar.gz"
-      sha256 "7a0a19b737f64a7dfeeeb18e67c24f9c5f0f61dd2da88b2f412e28c407c6c16f"
+      sha256 "a96b9e9125434f646a6bdffcbb43592ac3bbddec9bb2df2d0f71f110b694671d"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/proxy/releases/download/v#{version}/proxy_#{version}_linux_arm64.tar.gz"
-      sha256 "428f97ca113c6683f0a56d5759c48b9bca9d99fc7907a184d820bd702fc71d02"
+      sha256 "e6613a69629203d18d3ec264e104fdee79927a84e353e53da52d39843bf8a408"
     end
   end
 
