@@ -1,30 +1,30 @@
 class Brief < Formula
   desc "Detect a project's toolchain, configuration, and conventions"
   homepage "https://github.com/git-pkgs/brief"
-  version "0.8.0"
+  version "0.8.1"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/brief/releases/download/v#{version}/brief_#{version}_darwin_amd64.tar.gz"
-      sha256 "8df3d9d802079e55c2e5f8c1cce234967fb6847f043dfc05f9c961f8a4903a21"
+      sha256 "e23a1ceef94dd7223d069bc8f5820f510d0db38111821dc7fb97f30b973713e9"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/brief/releases/download/v#{version}/brief_#{version}_darwin_arm64.tar.gz"
-      sha256 "11dd24d6b35a0cf64d07f06c95124470c6a9d75a152119976f9a6851a2e909bc"
+      sha256 "cac21f52014f4865b7d40cf445e376bc5c400ac65d123af79ed6decb13691a17"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/brief/releases/download/v#{version}/brief_#{version}_linux_amd64.tar.gz"
-      sha256 "bf13d6b51078b54456f32e1e384715e383d2fa17fe43f8a4a026fb2bdeb5a1fd"
+      sha256 "d5037d1d98549f459841149c991df9550bd4d702248216112d846e81fe5d5558"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/brief/releases/download/v#{version}/brief_#{version}_linux_arm64.tar.gz"
-      sha256 "99b84460a6da3c6948ef4523b27f0bb63d1dd9aaa0f2879e958894515782d4fe"
+      sha256 "e3115882b4fbaeaa8341258c771f6229534ab1cf212d8e6e87a9502e7e247080"
     end
   end
 
