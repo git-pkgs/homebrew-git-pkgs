@@ -42,6 +42,7 @@ jobs:
 
       - name: Check for new release
         id: check
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ matrix.repo }}
@@ -49,6 +50,11 @@ jobs:
         run: |
           LATEST=$(gh api "repos/${REPO}/releases/latest" --jq '.tag_name' | sed 's/^v//')
           CURRENT=$(grep -m1 'version "' "$FORMULA" | sed 's/.*version "\([^"]*\)".*/\1/')
+
+          if [ -z "$LATEST" ]; then
+            echo "::error::Failed to fetch latest release for ${REPO}"
+            exit 1
+          fi
 
           echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
           echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
@@ -63,19 +69,28 @@ jobs:
 
       - name: Update formula
         if: steps.check.outputs.needs_update == 'true'
+        shell: bash
         env:
           VERSION: ${{ steps.check.outputs.latest }}
           REPO: ${{ matrix.repo }}
           FORMULA: ${{ matrix.formula }}
         run: |
           # Download checksums
-          curl -sL "https://github.com/${REPO}/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
+          curl -fsSL "https://github.com/${REPO}/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
 
           # Extract SHA256 for each platform
           SHA_DARWIN_AMD64=$(grep 'darwin_amd64' checksums.txt | awk '{print $1}')
           SHA_DARWIN_ARM64=$(grep 'darwin_arm64' checksums.txt | awk '{print $1}')
           SHA_LINUX_AMD64=$(grep 'linux_amd64' checksums.txt | awk '{print $1}')
           SHA_LINUX_ARM64=$(grep 'linux_arm64' checksums.txt | awk '{print $1}')
+
+          for sha in "$SHA_DARWIN_AMD64" "$SHA_DARWIN_ARM64" "$SHA_LINUX_AMD64" "$SHA_LINUX_ARM64"; do
+            if [ -z "$sha" ]; then
+              echo "::error::Missing checksum for ${REPO} v${VERSION}"
+              cat checksums.txt
+              exit 1
+            fi
+          done
 
           # Update formula - use awk to match sha256 lines by their preceding url context
           awk -v ver="$VERSION" \
@@ -87,10 +102,10 @@ jobs:
             /linux_amd64\.tar\.gz/ { url_type = "linux_amd64" }
             /linux_arm64\.tar\.gz/ { url_type = "linux_arm64" }
             /sha256 "/ {
-              if (url_type == "darwin_amd64") gsub(/"[a-f0-9]+"/, "\"" sha_da "\"")
-              else if (url_type == "darwin_arm64") gsub(/"[a-f0-9]+"/, "\"" sha_darm "\"")
-              else if (url_type == "linux_amd64") gsub(/"[a-f0-9]+"/, "\"" sha_la "\"")
-              else if (url_type == "linux_arm64") gsub(/"[a-f0-9]+"/, "\"" sha_larm "\"")
+              if (url_type == "darwin_amd64") gsub(/"[a-f0-9]*"/, "\"" sha_da "\"")
+              else if (url_type == "darwin_arm64") gsub(/"[a-f0-9]*"/, "\"" sha_darm "\"")
+              else if (url_type == "linux_amd64") gsub(/"[a-f0-9]*"/, "\"" sha_la "\"")
+              else if (url_type == "linux_arm64") gsub(/"[a-f0-9]*"/, "\"" sha_larm "\"")
               url_type = ""
             }
             { print }
