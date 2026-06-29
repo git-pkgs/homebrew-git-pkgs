@@ -1,30 +1,30 @@
 class Pom < Formula
   desc "Resolve Maven effective POMs in pure Go, no JVM required"
   homepage "https://github.com/git-pkgs/pom"
-  version "0.1.4"
+  version "0.1.5"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/pom/releases/download/v#{version}/pom_#{version}_darwin_amd64.tar.gz"
-      sha256 "6f0cf725a5443a4e52386935376c129314a4d3e729ca450c9b9794035c88966f"
+      sha256 "d3353d18a024e5680bd611f71fe5fa9358adfeef1b30a1a1d89a59638015e634"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/pom/releases/download/v#{version}/pom_#{version}_darwin_arm64.tar.gz"
-      sha256 "e2dd62ce788bd0bddfe13906b67babc6e7d62e6e23cbbb7a7dc76d11954fa8b4"
+      sha256 "02e4e584a610201f8fc05b71a09a13c40dbce76d4edbabfd3de6b7d106773b2c"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/pom/releases/download/v#{version}/pom_#{version}_linux_amd64.tar.gz"
-      sha256 "fa5f08f03863d255ed0c4f56f8ae7b7cdb267d13f4520a477a6ea1188fdb1f99"
+      sha256 "aaa850aa19ff81f406b93481d81b3f33392a9aae20aa945bb3ed67c6dae873ab"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/pom/releases/download/v#{version}/pom_#{version}_linux_arm64.tar.gz"
-      sha256 "03589bf83f7d63e845f39fc6c0be8d9882de5a6717ab99114f9caebe749046b1"
+      sha256 "ca072fb9a9f6c7f361e4387a1c679ced1b1aec11688a7bb0416bee46399984cb"
     end
   end
 
