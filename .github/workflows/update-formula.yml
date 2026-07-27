@@ -81,15 +81,16 @@ jobs:
           # Download checksums
           curl -fsSL "https://github.com/${REPO}/releases/download/v${VERSION}/checksums.txt" -o checksums.txt
 
-          # Extract SHA256 for each platform
-          SHA_DARWIN_AMD64=$(grep 'darwin_amd64' checksums.txt | awk '{print $1}')
-          SHA_DARWIN_ARM64=$(grep 'darwin_arm64' checksums.txt | awk '{print $1}')
-          SHA_LINUX_AMD64=$(grep 'linux_amd64' checksums.txt | awk '{print $1}')
-          SHA_LINUX_ARM64=$(grep 'linux_arm64' checksums.txt | awk '{print $1}')
+          # Extract SHA256 for each platform. Anchor on the .tar.gz suffix so
+          # sibling artifacts (e.g. *.tar.gz.sbom.json) are not matched.
+          SHA_DARWIN_AMD64=$(awk '$2 ~ /_darwin_amd64\.tar\.gz$/ {print $1}' checksums.txt)
+          SHA_DARWIN_ARM64=$(awk '$2 ~ /_darwin_arm64\.tar\.gz$/ {print $1}' checksums.txt)
+          SHA_LINUX_AMD64=$(awk '$2 ~ /_linux_amd64\.tar\.gz$/ {print $1}' checksums.txt)
+          SHA_LINUX_ARM64=$(awk '$2 ~ /_linux_arm64\.tar\.gz$/ {print $1}' checksums.txt)
 
           for sha in "$SHA_DARWIN_AMD64" "$SHA_DARWIN_ARM64" "$SHA_LINUX_AMD64" "$SHA_LINUX_ARM64"; do
-            if [ -z "$sha" ]; then
-              echo "::error::Missing checksum for ${REPO} v${VERSION}"
+            if [[ ! "$sha" =~ ^[a-f0-9]{64}$ ]]; then
+              echo "::error::Checksum for ${REPO} v${VERSION} is missing or not a single SHA256: '${sha}'"
               cat checksums.txt
               exit 1
             fi
@@ -113,6 +114,16 @@ jobs:
             }
             { print }
           ' "$FORMULA" > "$FORMULA.tmp" && mv "$FORMULA.tmp" "$FORMULA"
+
+          # Verify every sha256 in the rewritten formula is a single 64-char hex string.
+          bad=$(grep -c 'sha256 "' "$FORMULA")
+          good=$(grep -cE 'sha256 "[a-f0-9]{64}"' "$FORMULA")
+          if [ "$bad" -ne "$good" ] || [ "$good" -eq 0 ]; then
+            echo "::error::${FORMULA} has malformed sha256 entries after rewrite"
+            grep -nE 'sha256' "$FORMULA"
+            exit 1
+          fi
+          ruby -c "$FORMULA"
 
       - name: Commit and push
         if: steps.check.outputs.needs_update == 'true'
