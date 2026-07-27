@@ -4,8 +4,11 @@ This is the official Homebrew tap for [git-pkgs](https://github.com/git-pkgs/git
 
 ## Installation
 
+Homebrew requires third-party taps to be explicitly trusted before it will load their formulae. Add the tap and mark it trusted, then install what you need:
+
 ```bash
 brew tap git-pkgs/git-pkgs
+brew trust --tap git-pkgs/git-pkgs
 brew install git-pkgs
 brew install proxy
 brew install forge
