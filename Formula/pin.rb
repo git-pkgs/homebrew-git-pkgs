@@ -1,30 +1,34 @@
 class Pin < Formula
   desc "Browser asset vendoring without npm"
   homepage "https://github.com/git-pkgs/pin"
-  version "0.1.0"
+  version "0.1.1"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/pin/releases/download/v#{version}/pin_#{version}_darwin_amd64.tar.gz"
-      sha256 "92048ffc54785e17e18e5516320d4d812d5cf3120feac6de4c03dc2d8af5ff3e"
+      sha256 "72b1acd656cd72021b3db1d4ae48728f2fab15d2ea8c2c4a80a115de87d311b9
+acb282984f06f47acceae9740300e00e5165a01fc9b9826e15f1a255073eac71"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/pin/releases/download/v#{version}/pin_#{version}_darwin_arm64.tar.gz"
-      sha256 "a91ea194a87da55dab592b8fea403bbdc7ff00c9ac4a2861d63bcac357a00284"
+      sha256 "854c10d6fb5cf5a397949f78ebaf8023eeb60bb8da8487808be27f65ce735581
+60bc1014d77f99dc68b0239104632ad308d0421e2cdeba26de5dbf187ad2af94"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/pin/releases/download/v#{version}/pin_#{version}_linux_amd64.tar.gz"
-      sha256 "3d7910c5e93cc7ef6291ce3291c3913b98df585f02cde2cdb41017ff1bb512a0"
+      sha256 "eb11d420d42f27a37bcc9c7ce7970f0540cfc683d0aa011f11d7d62aa6cab5c0
+a8cbf0bf317ecdfeeb69cfa70bd91a5681dfc13ab9dc113946e5ac7c6a0a6abf"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/pin/releases/download/v#{version}/pin_#{version}_linux_arm64.tar.gz"
-      sha256 "645bd32d6f87930c12b8aae44c6581c822f45c8b0f49c48580adcc57f0e0d3b1"
+      sha256 "6e5502d461df2458b6ece87d90d5a1ac5faea6107559fdbdb761b743e1d9f249
+ba3db00c5f885b4383c44e0d086df72be992ad5aee08fdd19215430606dd67a9"
     end
   end
 
