@@ -30,6 +30,7 @@ class Forge < Formula
 
   def install
     bin.install "forge"
+    generate_completions_from_executable(bin/"forge", "completion")
   end
 
   test do
