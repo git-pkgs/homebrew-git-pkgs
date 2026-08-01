@@ -1,30 +1,30 @@
 class Licenses < Formula
   desc "Scan repositories for license text using ScanCode's rule corpus"
   homepage "https://github.com/git-pkgs/licenses"
-  version "0.2.0"
+  version "0.3.0"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/licenses/releases/download/v#{version}/licenses_#{version}_darwin_amd64.tar.gz"
-      sha256 "070903bbea11d6f7a964d2a57ad2658063bebe9c649a18e202257a01fb6eb2ee"
+      sha256 "3760348f733dbb7a9126855f2361f28d11b4617df41207b1ce6548fe4621f81c"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/licenses/releases/download/v#{version}/licenses_#{version}_darwin_arm64.tar.gz"
-      sha256 "266a6002b3c7110180769cb419d3090e29932eecce69d0e4835429af6f8000bc"
+      sha256 "45a5e3117efaca73c7e55dc79e7b5aa00599a6afd329be1598341e50fba33805"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/licenses/releases/download/v#{version}/licenses_#{version}_linux_amd64.tar.gz"
-      sha256 "25eadaae450b366f964381b326a17d8ebfee17f54e3ab6ef593a5c2a712ebbaa"
+      sha256 "68f2056a83628f80b90430b8767ac20282d29dcc1f341131af958eb4d7f20844"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/licenses/releases/download/v#{version}/licenses_#{version}_linux_arm64.tar.gz"
-      sha256 "9af8ba13699aa0186f586df41cc19d6f9a194ccf319218bcd5ca28037e7f751a"
+      sha256 "a99db366cedef9c298fa178cb70436fb76a27543169c048e5864375b0194c010"
     end
   end
 
