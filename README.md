@@ -25,3 +25,7 @@ brew install licenses
 brew update
 brew upgrade git-pkgs proxy forge brief pom pin capcheck licenses
 ```
+
+## License
+
+[MIT](LICENSE).
