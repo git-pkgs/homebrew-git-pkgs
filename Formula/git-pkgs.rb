@@ -1,30 +1,30 @@
 class GitPkgs < Formula
   desc "Git-native package manager for monorepos"
   homepage "https://github.com/git-pkgs/git-pkgs"
-  version "0.20.0"
+  version "0.21.0"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs_#{version}_darwin_amd64.tar.gz"
-      sha256 "bd8c743636b1f79828514d0d0a4c647da7720f0a73574731abd73b867ba6b2bf"
+      sha256 "c1471cb59599a36fc30b2bcc81ee164c7a1db4c246f4e5b6437ca3ffbc3ce1f3"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs_#{version}_darwin_arm64.tar.gz"
-      sha256 "29ccf0075850dbd9fbb0b4700e7968d73aed625b50ee439e862f71f6f493aa1a"
+      sha256 "01f24009d1d3afa334e36e27436048da4d9158070abb16b238616d16f2164cb0"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs_#{version}_linux_amd64.tar.gz"
-      sha256 "34dcc7b973dcfcb99e77a50a143ecc2842064210c47c007019cf16bd3a2d6c39"
+      sha256 "5429557b8f7de9918b995487e09c6499a6f05d5894263c967229f382de808573"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/git-pkgs/releases/download/v#{version}/git-pkgs_#{version}_linux_arm64.tar.gz"
-      sha256 "8a78dca2774435e6b3bc0dbfee6e05d67b101fd96beb189e67c08095b5a6a764"
+      sha256 "4f409dae36d157a9ccbe094b1a9e2fc61b61445f9494dc4beb4859d940501dc1"
     end
   end
 
