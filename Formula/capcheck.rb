@@ -1,30 +1,30 @@
 class Capcheck < Formula
   desc "Fail CI when Go code or dependencies gain new privileged operations"
   homepage "https://github.com/git-pkgs/capcheck"
-  version "0.1.4"
+  version "0.1.5"
   license "MIT"
 
   on_macos do
     on_intel do
       url "https://github.com/git-pkgs/capcheck/releases/download/v#{version}/capcheck_#{version}_darwin_amd64.tar.gz"
-      sha256 "cb17cbc82c547809404c812c8898118a703d7a71bdb83eed8d36698b942dabc8"
+      sha256 "22d551abdea041c8746bfd341da489a4c52c66878af1df31cc89cd9822570abb"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/capcheck/releases/download/v#{version}/capcheck_#{version}_darwin_arm64.tar.gz"
-      sha256 "1f4cab6babe1b89e9f2fb29dcbf39340a4ee1a7813f14d27a3c90ad2d630f5f2"
+      sha256 "ce4ef2f178d0224b5e2fb2e6a4e3bca35109fcaea2e2942b467064b62cca2087"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/git-pkgs/capcheck/releases/download/v#{version}/capcheck_#{version}_linux_amd64.tar.gz"
-      sha256 "912a966120b9cb5422215303f7c9defdf16db4eb8228ee9aa4bca9725be02f10"
+      sha256 "df138564ff44187d5c9416ba6ba3a74d739a10d9d4ba6455acc3d32868366abf"
     end
 
     on_arm do
       url "https://github.com/git-pkgs/capcheck/releases/download/v#{version}/capcheck_#{version}_linux_arm64.tar.gz"
-      sha256 "55ed0e68c35da7cf2847159f8f0e193214e7ba754e2e36d4c595482f0c7b7a3c"
+      sha256 "7788863e9fb4fe8631125c0e29db7a1dc8e7dcd8ec799a6780842170cff00bd4"
     end
   end
 
